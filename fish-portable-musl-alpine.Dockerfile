@@ -1,8 +1,8 @@
 FROM alpine
 VOLUME /result
 
-ENV NCURSES_VER 6.2
-ENV FISH_VER 3.4.1
+ENV NCURSES_VER 6.3
+ENV FISH_VER 3.5.1
 ENV LDFLAGS -static
 
 RUN apk update && apk add wget mc alpine-sdk git g++ make cmake ncurses ncurses-dev ncurses-libs xz
