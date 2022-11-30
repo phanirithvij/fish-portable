@@ -5,7 +5,7 @@ ENV NCURSES_VER 6.3
 ENV FISH_VER 3.5.1
 ENV LDFLAGS -static
 
-RUN apk update && apk add wget mc alpine-sdk git g++ make cmake ncurses ncurses-dev ncurses-libs xz
+RUN apk update && apk add wget mc alpine-sdk git g++ make cmake ncurses ncurses-dev ncurses-libs xz python3 py3-pip
 
 RUN mkdir -p /build /result
 WORKDIR /build
@@ -23,7 +23,8 @@ WORKDIR /build/fish-$FISH_VER
 RUN patch -p1 -i /tmp/enable-static-linking.patch
 WORKDIR /build/fish-$FISH_VER/build
 # https://github.com/fish-shell/fish-shell/issues/6808#issuecomment-603992552
-RUN mkdir /fish && cmake -DCMAKE_INSTALL_PREFIX=/fish -DCMAKE_BUILD_TYPE=Release  .. && make && make install
+RUN pip3 install --upgrade pip && pip3 install sphinx
+RUN mkdir /fish && cmake -DCMAKE_INSTALL_PREFIX=/fish -DCMAKE_BUILD_TYPE=Release -DBUILD_DOCS=ON .. && make && make install
 ADD fish.sh /fish/bin/
 RUN chmod +x /fish/bin/fish.sh
 
